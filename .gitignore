@@ -23,5 +23,4 @@ auto-imports.d.ts
 components.d.ts
 
 # env
-env.development.js
-env.production.js
+.env
