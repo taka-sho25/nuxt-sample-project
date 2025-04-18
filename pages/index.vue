@@ -15,7 +15,7 @@
   </section>
 </template>
 
-<style>
+<style lang="css" scoped>
 .container {
   display: flex;
   align-items: center;

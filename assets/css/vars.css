@@ -1,0 +1,27 @@
+:root {
+  /* neutral */
+  --black: #333;
+  --white: #fff;
+  --gray80: #6d7780;
+  --gray60: #a4aeb7;
+  --gray20: #d0d5da;
+  --gray15: #d9d9d9;
+  --gray10: #e0e4e9;
+  --gray05: #eceff1;
+
+  /* UI Color */
+  --border: #eceff1;
+  --area-bg: #f7f8f9;
+  --alert: #e13a2f;
+  --alert-light: #fef5f5;
+  --safe: #63ad5d;
+  --safe-light: #f4f9f4;
+  --mustard: #ffe660;
+  --orange: #f59023;
+  --orange-light: #fff4e3;
+  --safe-form: #11bfb3;
+  --dark-blue: #053053;
+
+  --primary: #0071bc;
+  --primary-light80: #58a0d0;
+}

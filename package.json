@@ -9,11 +9,14 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "nuxi start"
+    "start": "nuxi start",
+    "openapi:thecatapi-generate": "openapi-generator-cli generate -g typescript-fetch -i ./api/thecatapi-oas.yaml -o ./api/thecatapi/openapi-generator --additional-properties=withSeparateModelsAndApi=true,useSingleRequestParameter=true,supportsES6=true --model-package=model --api-package=api"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.3.0",
+    "@openapitools/openapi-generator-cli": "^2.19.1",
     "@pinia/nuxt": "^0.11.0",
+    "embla-carousel-vue": "^8.6.0",
     "nuxt": "^3.16.2",
     "pinia": "^3.0.2"
   },
