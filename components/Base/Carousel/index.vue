@@ -6,7 +6,7 @@ import type { StyleValue } from 'vue';
 type Props = {
   items: T[];
   options?: EmblaOptionsType;
-  width?: number;
+  width?: string;
   spaceBetween?: number;
 };
 
@@ -26,7 +26,7 @@ const containerStyle = computed<StyleValue>(() => {
 
 const slideStyle = computed<StyleValue>(() => {
   return {
-    flex: props.width ? `0 0 ${props.width}px` : '0 0 100%',
+    flex: props.width ? `0 0 ${props.width}` : '0 0 100%',
     'margin-left': props.spaceBetween ? `${props.spaceBetween}px` : 'unset',
   };
 });

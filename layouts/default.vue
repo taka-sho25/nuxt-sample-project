@@ -3,5 +3,5 @@
 <template>
   <Navbar />
   <slot />
-  <Teleport to="#teleport1" />
+  <div id="teleport1" />
 </template>
