@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ImagesApi } from '@/api/thecatapi/openapi-generator';
+import { getStorage, type StorageValue } from '@/lib/useStorage';
 
 const config = useRuntimeConfig();
 
@@ -7,8 +8,10 @@ const imagesApi = new ImagesApi();
 
 const openModal = ref(false);
 const modalImage = ref('');
+const modalImageId = ref('');
+const theCatStorage = getStorage();
 
-const { data: cats } = await useAsyncData(async () => {
+const { data: cats } = await useAsyncData('the-cats', async () => {
   const response = await imagesApi.imagesListSearchOrRandom({
     xApiKey: config.public.CAT_API_KEY,
     limit: 20,
@@ -20,16 +23,33 @@ const { data: cats } = await useAsyncData(async () => {
 
 const closeModal = () => {
   modalImage.value = '';
+  modalImageId.value = '';
   openModal.value = false;
 };
 
-const onClickImage = (src: string) => {
-  if (!src) {
+const onClickImage = (src: string, id: string) => {
+  if (!src || !id) {
     return '';
   }
 
   modalImage.value = src;
+  modalImageId.value = id;
   openModal.value = true;
+};
+
+const handleClickFavoriteImage = async () => {
+  // const storageValue = getStorage();
+  const favoriteIds = theCatStorage.value?.theCat?.favoriteIds || [];
+  const newStorageValue: StorageValue = {
+    theCat: {
+      favoriteIds: favoriteIds.includes(modalImageId.value)
+        ? favoriteIds.filter((id) => id !== modalImageId.value)
+        : [...favoriteIds, modalImageId.value],
+    },
+  };
+
+  console.log({ ...newStorageValue });
+  theCatStorage.value = { ...newStorageValue };
 };
 </script>
 
@@ -40,7 +60,7 @@ const onClickImage = (src: string) => {
       <!-- カルーセル -->
       <Carousel v-if="cats" :items="cats || []" width="50%" :space-between="12">
         <template #item="{ item }">
-          <div class="cats__image-wrapper" @click="onClickImage(item.url || '')">
+          <div class="cats__image-wrapper" @click="onClickImage(item.url || '', item.id || '')">
             <img :src="item.url" alt="" role="img" class="cats__image" />
           </div>
         </template>
@@ -51,6 +71,7 @@ const onClickImage = (src: string) => {
     <Modal @close="closeModal">
       <div class="cat__modal-image">
         <img :src="modalImage" alt="" role="img" />
+        <button type="button" class="cat__modal-button" @click="handleClickFavoriteImage">お気に入り</button>
       </div>
     </Modal>
   </Teleport>
@@ -62,7 +83,7 @@ const onClickImage = (src: string) => {
   height: 100vh;
   padding: 56px;
   margin: 0 auto;
-  background-color: var(--gray15);
+  background-color: var(--gray10);
 }
 
 .cats__content {
@@ -88,5 +109,12 @@ const onClickImage = (src: string) => {
 
 .cat__modal-image img {
   width: 700px;
+}
+
+.cat__modal-button {
+  padding: 4px 8px;
+  background-color: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
 </style>

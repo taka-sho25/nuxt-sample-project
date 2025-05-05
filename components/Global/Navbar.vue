@@ -19,9 +19,9 @@ watch(
   <div class="navbar">
     <span @click="open = !open"> {{ open ? 'Close' : 'View' }} Links </span>
     <div class="navbar-drawer" :class="{ isOpen: open }">
-      <NuxtLink v-for="link of links" :key="link.name" :to="link.to" exact>
+      <a v-for="link of links" :key="link.name" :href="link.to">
         {{ link.name }}
-      </NuxtLink>
+      </a>
     </div>
   </div>
 </template>
