@@ -4,14 +4,17 @@ const StorageKey = 'Nuxt-Sample-Project';
 
 export type StorageValue = {
   theCat: {
-    favoriteIds: string[];
+    favoriteImages: {
+      id: string;
+      src: string;
+    }[];
   };
 };
 
 export const getStorage = () => {
   return useStorage<StorageValue>(StorageKey, {
     theCat: {
-      favoriteIds: [],
+      favoriteImages: [],
     },
   });
 };

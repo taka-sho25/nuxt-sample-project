@@ -3,6 +3,7 @@ const open = ref(false);
 const links = [
   { to: '/', name: 'Home' },
   { to: '/the-cat', name: 'The Cat Page' },
+  { to: '/the-cat/favs', name: 'The Cat Favs' },
 ];
 
 const route = useRoute();

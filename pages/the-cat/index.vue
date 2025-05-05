@@ -11,12 +11,12 @@ const modalImage = ref('');
 const modalImageId = ref('');
 const theCatStorage = getStorage();
 
-const favoriteIds = computed(() => {
-  return theCatStorage.value?.theCat?.favoriteIds || [];
+const favoriteImages = computed(() => {
+  return theCatStorage.value?.theCat?.favoriteImages || [];
 });
 
 const isImageFavorite = computed(() => {
-  return favoriteIds.value.includes(modalImageId.value);
+  return favoriteImages.value.some((image) => image.id === modalImageId.value);
 });
 
 const { data: cats } = await useAsyncData('the-cats', async () => {
@@ -48,9 +48,9 @@ const onClickImage = (src: string, id: string) => {
 const handleClickFavoriteImage = async () => {
   const newStorageValue: StorageValue = {
     theCat: {
-      favoriteIds: isImageFavorite.value
-        ? favoriteIds.value.filter((id) => id !== modalImageId.value)
-        : [...favoriteIds.value, modalImageId.value],
+      favoriteImages: isImageFavorite.value
+        ? favoriteImages.value.filter((image) => image.id !== modalImageId.value)
+        : [...favoriteImages.value, { id: modalImageId.value, src: modalImage.value }],
     },
   };
 
