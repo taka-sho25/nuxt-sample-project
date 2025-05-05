@@ -11,6 +11,14 @@ const modalImage = ref('');
 const modalImageId = ref('');
 const theCatStorage = getStorage();
 
+const favoriteIds = computed(() => {
+  return theCatStorage.value?.theCat?.favoriteIds || [];
+});
+
+const isImageFavorite = computed(() => {
+  return favoriteIds.value.includes(modalImageId.value);
+});
+
 const { data: cats } = await useAsyncData('the-cats', async () => {
   const response = await imagesApi.imagesListSearchOrRandom({
     xApiKey: config.public.CAT_API_KEY,
@@ -38,17 +46,14 @@ const onClickImage = (src: string, id: string) => {
 };
 
 const handleClickFavoriteImage = async () => {
-  // const storageValue = getStorage();
-  const favoriteIds = theCatStorage.value?.theCat?.favoriteIds || [];
   const newStorageValue: StorageValue = {
     theCat: {
-      favoriteIds: favoriteIds.includes(modalImageId.value)
-        ? favoriteIds.filter((id) => id !== modalImageId.value)
-        : [...favoriteIds, modalImageId.value],
+      favoriteIds: isImageFavorite.value
+        ? favoriteIds.value.filter((id) => id !== modalImageId.value)
+        : [...favoriteIds.value, modalImageId.value],
     },
   };
 
-  console.log({ ...newStorageValue });
   theCatStorage.value = { ...newStorageValue };
 };
 </script>
@@ -57,7 +62,6 @@ const handleClickFavoriteImage = async () => {
   <div class="container">
     <Heading :level="1" text="The Cat Page" />
     <div class="cats__content">
-      <!-- カルーセル -->
       <Carousel v-if="cats" :items="cats || []" width="50%" :space-between="12">
         <template #item="{ item }">
           <div class="cats__image-wrapper" @click="onClickImage(item.url || '', item.id || '')">
@@ -71,7 +75,9 @@ const handleClickFavoriteImage = async () => {
     <Modal @close="closeModal">
       <div class="cat__modal-image">
         <img :src="modalImage" alt="" role="img" />
-        <button type="button" class="cat__modal-button" @click="handleClickFavoriteImage">お気に入り</button>
+        <button type="button" class="cat__modal-button" @click="handleClickFavoriteImage">
+          {{ isImageFavorite ? 'Remove Fav' : 'Add Fav' }}
+        </button>
       </div>
     </Modal>
   </Teleport>
